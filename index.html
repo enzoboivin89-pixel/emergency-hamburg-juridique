@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#101b2d">
+  <title>Portail juridique — Emergency Hamburg RP</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#accueil"><span class="brand-mark">⚖</span><span><b>EMERGENCY HAMBURG</b><small>PORTAIL JURIDIQUE RP</small></span></a>
+  <button class="menu-btn" id="menuBtn" aria-label="Ouvrir le menu">☰</button>
+  <nav id="nav">
+    <a href="#accueil">Accueil</a><a href="#documents">Documents</a><a href="#code-penal">Code pénal</a><a href="#tribunal">Tribunal</a><a href="#administration">Administration</a>
+  </nav>
+</header>
+<main>
+  <section class="hero" id="accueil">
+    <div class="hero-content">
+      <p class="eyebrow">RÉPUBLIQUE D'EMERGENCY HAMBURG · ROLEPLAY</p>
+      <h1>Le portail officiel<br><em>de la justice RP.</em></h1>
+      <p class="hero-copy">Retrouvez vos démarches administratives, les règles pénales et les services judiciaires de votre ville.</p>
+      <div class="hero-actions"><a class="btn gold" href="#documents">Effectuer une démarche</a><a class="btn ghost" href="#code-penal">Consulter le code pénal</a></div>
+    </div>
+    <div class="hero-seal"><div class="seal-ring"><span>⚖</span><b>JUSTICE</b><small>EMERGENCY HAMBURG RP</small></div></div>
+  </section>
+
+  <section class="section" id="documents">
+    <div class="section-head"><div><p class="eyebrow">SERVICES AUX CITOYENS</p><h2>Documents administratifs</h2></div><p>Déposez une demande de document RP. Les demandes sont enregistrées dans cette démonstration sur votre appareil.</p></div>
+    <div class="cards">
+      <article class="service-card"><div class="card-icon">▣</div><h3>Carte d'identité</h3><p>Demande de création ou de renouvellement de votre pièce d'identité RP.</p><button class="text-btn" data-form="identity">Faire une demande →</button></article>
+      <article class="service-card"><div class="card-icon">⌁</div><h3>Permis de conduire</h3><p>Demande de permis ou ajout d'une catégorie de conduite RP.</p><button class="text-btn" data-form="license">Faire une demande →</button></article>
+      <article class="service-card"><div class="card-icon">▤</div><h3>Carte grise</h3><p>Enregistrement d'un véhicule et de son propriétaire RP.</p><button class="text-btn" data-form="vehicle">Faire une demande →</button></article>
+    </div>
+  </section>
+
+  <section class="section dark-section" id="code-penal">
+    <div class="section-head"><div><p class="eyebrow">RÈGLES ET SANCTIONS</p><h2>Code pénal RP</h2></div><p>Base de départ à personnaliser selon les règles de votre serveur.</p></div>
+    <div class="penal-tools"><input id="penalSearch" type="search" placeholder="Rechercher une infraction…"><select id="penalCategory"><option value="">Toutes les catégories</option><option>Circulation</option><option>Atteintes aux personnes</option><option>Atteintes aux biens</option><option>Ordre public</option></select></div>
+    <div class="table-wrap"><table><thead><tr><th>Infraction RP</th><th>Catégorie</th><th>Amende RP</th><th>Prison RP</th></tr></thead><tbody id="penalRows"></tbody></table></div>
+    <p class="note">Exemples fictifs : montants et peines à valider par l'administration du serveur.</p>
+  </section>
+
+  <section class="section" id="tribunal">
+    <div class="section-head"><div><p class="eyebrow">PROCÉDURES JUDICIAIRES</p><h2>Tribunal & dossiers</h2></div><p>Déposez un signalement ou une demande d'examen judiciaire. Les champs sont limités aux informations RP utiles.</p></div>
+    <div class="tribunal-layout">
+      <div class="info-panel"><div class="card-icon">⚖</div><h3>Une procédure claire</h3><ol><li>Déposez votre demande.</li><li>Un membre habilité l'examine.</li><li>Une audience peut être organisée.</li><li>La décision est ajoutée au dossier RP.</li></ol></div>
+      <form id="caseForm" class="form-panel"><h3>Déposer une demande au tribunal</h3>
+        <label>Votre nom RP<input name="name" required maxlength="60" placeholder="Nom et prénom RP"></label>
+        <label>Type de demande<select name="kind" required><option value="">Choisir…</option><option>Plainte RP</option><option>Contestation d'une sanction</option><option>Demande d'audience</option><option>Autre demande</option></select></label>
+        <label>Personne concernée (facultatif)<input name="person" maxlength="60" placeholder="Nom RP"></label>
+        <label>Résumé des faits<textarea name="details" required maxlength="1500" rows="4" placeholder="Expliquez les faits dans le cadre du RP…"></textarea></label>
+        <button class="btn gold" type="submit">Envoyer la demande</button><p class="form-status" id="caseStatus" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <section class="section admin-section" id="administration">
+    <div class="section-head"><div><p class="eyebrow">ESPACE DE GESTION · DÉMONSTRATION</p><h2>Administration</h2></div><p>Vue locale des demandes enregistrées sur cet appareil. Ce panneau n'est pas sécurisé et ne doit pas être utilisé avec de vraies données personnelles.</p></div>
+    <div class="admin-stats"><div><b id="docCount">0</b><span>Demandes administratives</span></div><div><b id="caseCount">0</b><span>Dossiers judiciaires</span></div></div>
+    <div class="admin-list"><div class="list-head"><h3>Demandes reçues</h3><button class="text-btn" id="exportBtn">Exporter les données ↓</button></div><div id="requestsList" class="requests-list"><p class="muted">Aucune demande pour le moment.</p></div></div>
+  </section>
+</main>
+<footer><span>⚖ EMERGENCY HAMBURG RP</span><span>Portail fictif destiné au RolePlay — sans valeur juridique officielle.</span></footer>
+
+<dialog id="requestDialog">
+  <form id="documentForm" method="dialog" class="dialog-form">
+    <button class="close" value="cancel" aria-label="Fermer">×</button>
+    <p class="eyebrow">DÉMARCHE ADMINISTRATIVE RP</p><h2 id="dialogTitle">Demande de document</h2>
+    <input type="hidden" name="documentType" id="documentType">
+    <label>Nom et prénom RP<input name="name" required maxlength="60" placeholder="Ex. Alex Martin"></label>
+    <label>Date de naissance RP<input name="birth" type="date" required></label>
+    <label>Identifiant Roblox (facultatif)<input name="roblox" maxlength="40" placeholder="Pseudo Roblox"></label>
+    <div id="extraFields"></div>
+    <label>Motif / précision (facultatif)<textarea name="notes" rows="3" maxlength="500" placeholder="Informations complémentaires…"></textarea></label>
+    <p class="note">N'indiquez aucune vraie adresse, aucun vrai numéro de pièce d'identité et aucune donnée sensible. Utilisez uniquement des informations fictives RP.</p>
+    <button class="btn gold" id="submitDoc" value="submit">Envoyer la demande</button>
+    <p class="form-status" id="docStatus" aria-live="polite"></p>
+  </form>
+</dialog>
+<script src="app.js"></script>
+</body></html>
