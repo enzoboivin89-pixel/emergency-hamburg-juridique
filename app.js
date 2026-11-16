@@ -1,7 +1,74 @@
+const SUPABASE_URL = "https://enpgpjnbdhflhqoyxfle.supabase.co";
+const SUPABASE_KEY = "sb_publishable_FvII21FY0B25zR7g2izE5g_KA9PmkmA";
+
+const supabase = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 const $ = (s) => document.querySelector(s);
 const storeKey = "eh_rp_portal_demo_v1";
 const getData = () => { try { return JSON.parse(localStorage.getItem(storeKey)) || {docs:[],cases:[]}; } catch { return {docs:[],cases:[]}; } };
 const saveData = d => localStorage.setItem(storeKey, JSON.stringify(d));
+let authMode = "login";
+
+function openAuth(mode) {
+  authMode = mode;
+  $("#authTitle").textContent = mode === "login" ? "Connexion" : "Créer un compte";
+  $("#authSubmit").textContent = mode === "login" ? "Se connecter" : "Créer mon compte";
+  $("#authStatus").textContent = "";
+  $("#authDialog").showModal();
+}
+
+$("#loginBtn").addEventListener("click", () => openAuth("login"));
+$("#registerBtn").addEventListener("click", () => openAuth("register"));
+$("#closeAuth").addEventListener("click", () => $("#authDialog").close());
+
+$("#authForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const email = $("#authEmail").value.trim();
+  const password = $("#authPassword").value;
+
+  $("#authStatus").textContent = "Veuillez patienter...";
+
+  const result = authMode === "register"
+    ? await supabase.auth.signUp({ email, password })
+    : await supabase.auth.signInWithPassword({ email, password });
+
+  if (result.error) {
+    $("#authStatus").textContent = result.error.message;
+    return;
+  }
+
+  if (authMode === "register" && !result.data.session) {
+    $("#authStatus").textContent = "Compte créé ! Vérifie ta boîte mail pour confirmer ton adresse.";
+    return;
+  }
+
+  $("#authStatus").textContent = "Connexion réussie !";
+  $("#authDialog").close();
+});
+
+$("#logoutBtn").addEventListener("click", async () => {
+  const { error } = await supabase.auth.signOut();
+  if (error) alert(error.message);
+});
+
+async function updateAuthDisplay() {
+  const { data } = await supabase.auth.getUser();
+  const user = data.user;
+
+  $("#loginBtn").hidden = !!user;
+  $("#registerBtn").hidden = !!user;
+  $("#logoutBtn").hidden = !user;
+  $("#userEmail").textContent = user ? user.email : "";
+}
+
+supabase.auth.onAuthStateChange(() => {
+  updateAuthDisplay();
+});
+
+updateAuthDisplay();
 const penal = [
  ["Excès de vitesse","Circulation","250 $","—"],
  ["Conduite dangereuse","Circulation","500 $","5 min"],
