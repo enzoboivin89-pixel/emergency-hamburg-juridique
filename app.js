@@ -100,13 +100,49 @@ document.querySelectorAll("[data-form]").forEach(btn=>btn.addEventListener("clic
  };
  $("#dialogTitle").textContent=config[type][0]; $("#documentType").value=type; $("#extraFields").innerHTML=config[type][1]; $("#docStatus").textContent=""; $("#requestDialog").showModal();
 }));
-$("#documentForm").addEventListener("submit",e=>{
- e.preventDefault(); const fd=new FormData(e.currentTarget), obj=Object.fromEntries(fd.entries());
- if(!obj.name||!obj.birth){$("#docStatus").textContent="Merci de compléter les champs obligatoires.";return;}
- const d=getData(); d.docs.push({...obj,type:$("#dialogTitle").textContent,status:"À examiner",created:Date.now()});saveData(d);
- $("#docStatus").textContent="Demande enregistrée sur cet appareil (démonstration).";renderAdmin();e.currentTarget.reset();setTimeout(()=>$("#requestDialog").close(),1000);
+
+$("#documentForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    $("#docStatus").textContent = "Connecte-toi pour envoyer une demande.";
+    return;
+  }
+
+  const fd = new FormData(e.currentTarget);
+  const obj = Object.fromEntries(fd.entries());
+
+  if (!obj.name || !obj.birth) {
+    $("#docStatus").textContent = "Merci de compléter les champs obligatoires.";
+    return;
+  }
+
+  const details = { ...obj };
+  delete details.name;
+  delete details.birth;
+
+  const { error } = await supabase
+    .from("demandes_documents")
+    .insert({
+      user_id: user.id,
+      type: $("#dialogTitle").textContent,
+      name: obj.name,
+      birth: obj.birth,
+      details
+    });
+
+  if (error) {
+    $("#docStatus").textContent = "Erreur : " + error.message;
+    return;
+  }
+
+  $("#docStatus").textContent = "Demande envoyée avec succès !";
+  e.currentTarget.reset();
+  setTimeout(() => $("#requestDialog").close(), 1200);
 });
-$("#caseForm").addEventListener("submit",e=>{
+
  e.preventDefault(); const obj=Object.fromEntries(new FormData(e.currentTarget).entries());const d=getData();
  d.cases.push({...obj,status:"À examiner",created:Date.now()});saveData(d);$("#caseStatus").textContent="Demande enregistrée sur cet appareil (démonstration).";e.currentTarget.reset();renderAdmin();
 });
