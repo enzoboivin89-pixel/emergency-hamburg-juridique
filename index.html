@@ -85,5 +85,23 @@
     <p class="form-status" id="docStatus" aria-live="polite"></p>
   </form>
 </dialog>
+  <dialog id="authDialog">
+  <form id="authForm" class="dialog-form">
+    <button type="button" class="close" id="closeAuth">×</button>
+    <h2 id="authTitle">Connexion</h2>
+
+    <label>Adresse e-mail
+      <input type="email" id="authEmail" required placeholder="exemple@email.com">
+    </label>
+
+    <label>Mot de passe
+      <input type="password" id="authPassword" required minlength="8" placeholder="8 caractères minimum">
+    </label>
+
+    <p id="authStatus" class="form-status"></p>
+
+    <button type="submit" class="btn gold" id="authSubmit">Se connecter</button>
+  </form>
+</dialog>
 <script src="app.js"></script>
 </body></html>
