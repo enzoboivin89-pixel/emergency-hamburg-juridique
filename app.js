@@ -1,8 +1,8 @@
 
-const SUPABASE_URL = "https://enpgpjnbdhflhqoyxfle.supabase.co";
+const SUPABASE_URL = "https://enpgpjnbdhflhqoyxfle.supabaseClient.co";
 const SUPABASE_KEY = "sb_publishable_FvII21FY0B25zR7g2izE5g_KA9PmkmA";
 
-const supabaseClient = window.supabase.createClient(
+const supabaseClient = window.supabaseClient.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
@@ -53,8 +53,8 @@ $("#authForm").addEventListener("submit", async (e) => {
 
   try {
     const result = authMode === "register"
-      ? await supabase.auth.signUp({ email, password })
-      : await supabase.auth.signInWithPassword({ email, password });
+      ? await supabaseClient.auth.signUp({ email, password })
+      : await supabaseClient.auth.signInWithPassword({ email, password });
 
     if (result.error) {
       $("#authStatus").textContent = result.error.message;
@@ -79,7 +79,7 @@ $("#authForm").addEventListener("submit", async (e) => {
 });
 
 $("#logoutBtn").addEventListener("click", async () => {
-  const { error } = await supabase.auth.signOut();
+  const { error } = await supabaseClient.auth.signOut();
 
   if (error) {
     alert(error.message);
@@ -92,7 +92,7 @@ $("#logoutBtn").addEventListener("click", async () => {
 // AFFICHAGE DU COMPTE ET DES DROITS ADMIN
 
 async function updateAuthDisplay() {
-  const { data, error } = await supabase.auth.getUser();
+  const { data, error } = await supabaseClient.auth.getUser();
 
   if (error) {
     console.error(error);
@@ -135,7 +135,7 @@ async function updateAuthDisplay() {
   }
 }
 
-supabase.auth.onAuthStateChange(() => {
+supabaseClient.auth.onAuthStateChange(() => {
   setTimeout(() => updateAuthDisplay(), 0);
 });
 
@@ -224,7 +224,7 @@ $("#requestDialog .close").addEventListener("click", (e) => {
 $("#documentForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await supabaseClient.auth.getUser();
 
   if (!user) {
     $("#docStatus").textContent =
@@ -284,7 +284,7 @@ $("#documentForm").addEventListener("submit", async (e) => {
 $("#caseForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await supabaseClient.auth.getUser();
 
   if (!user) {
     $("#caseStatus").textContent =
